@@ -9,6 +9,8 @@ const app = express();
 const allowedOrigins = [
   process.env.FRONTEND_URL,
   process.env.PREVIEW_URL,
+  "http://localhost:5173",
+  "http://localhost:4173",
 ].filter((origin): origin is string => Boolean(origin));
 
 app.use(
