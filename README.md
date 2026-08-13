@@ -817,32 +817,30 @@ torvalds
 13. Try to access `/favorites`.
 14. Verify the application redirects to `/login`.
 
-## Submission Checklist
+## Checklist
 
-Before submitting the project:
-
-- [ ] Frontend builds successfully
-- [ ] Backend builds successfully
-- [ ] Register works
-- [ ] Login works
-- [ ] Passwords are hashed
-- [ ] JWT authentication works
-- [ ] Protected backend routes work
-- [ ] GitHub username search works
-- [ ] Repository information displays correctly
-- [ ] Save favorite works
-- [ ] Duplicate favorites are prevented
-- [ ] Favorites page works
-- [ ] Delete favorite works
-- [ ] Protected frontend route works
-- [ ] Loading states work
-- [ ] Error states work
-- [ ] Responsive design works
-- [ ] `.env` is ignored
-- [ ] `.env.example` is included
-- [ ] No database credentials are committed
-- [ ] README contains setup instructions
-- [ ] Both projects pass production builds
+- [x] Frontend builds successfully
+- [x] Backend builds successfully
+- [x] Register works
+- [x] Login works
+- [x] Passwords are hashed
+- [x] JWT authentication works
+- [x] Protected backend routes work
+- [x] GitHub username search works
+- [x] Repository information displays correctly
+- [x] Save favorite works
+- [x] Duplicate favorites are prevented
+- [x] Favorites page works
+- [x] Delete favorite works
+- [x] Protected frontend route works
+- [x] Loading states work
+- [x] Error states work
+- [x] Responsive design works
+- [x] `.env` is ignored
+- [x] `.env.example` is included
+- [x] No database credentials are committed
+- [x] README contains setup instructions
+- [x] Both projects pass production builds
 
 ## Author
 
