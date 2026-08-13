@@ -1,17 +1,42 @@
 # GitHub Repo Explorer
 
-A fullstack TypeScript application that allows users to search public GitHub repositories by username and save favorite repositories to their account.
+A fullstack TypeScript application that allows users to search GitHub repositories by username and save their favorite repositories to their account.
+
+## Live Demo
+
+### Frontend
+
+https://github-repo-explorer-by-priyanka.vercel.app
+
+### Backend
+
+https://githubrepoexplorer-q036.onrender.com
+
+---
 
 ## Features
 
-- Search GitHub repositories by username
-- View repository name, description, stars, language, and GitHub link
-- Register and log in with JWT authentication
+- Search public GitHub repositories by username
+- Display repository information:
+  - Repository name
+  - Description
+  - Language
+  - Star count
+  - GitHub repository link
+
+- User registration
+- User login
+- JWT-based authentication
+- Password hashing using bcrypt
 - Save repositories as favorites
+- View saved repositories
 - Remove repositories from favorites
-- Protected favorites routes
-- Responsive UI
-- Loading and error states
+- Protected favorites page
+- Loading states
+- Error handling
+- Responsive UI using Tailwind CSS
+
+---
 
 ## Tech Stack
 
@@ -30,30 +55,128 @@ A fullstack TypeScript application that allows users to search public GitHub rep
 - Node.js
 - Express
 - TypeScript
-- Prisma
-- PostgreSQL / Supabase
+- Prisma ORM
+- PostgreSQL
 - JWT
 - bcrypt
+
+### Database
+
+- Supabase PostgreSQL
+
+### Deployment
+
+- Frontend: Vercel
+- Backend: Render
+- Database: Supabase
+
+---
 
 ## Project Structure
 
 ```text
-GithubRepoExplorer/
+GitHubRepoExplorer/
+│
 ├── Frontend/
-└── BackEnd/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Navbar.tsx
+│   │   │   ├── ProtectedRoute.tsx
+│   │   │   └── RepoCard.tsx
+│   │   │
+│   │   ├── context/
+│   │   │   ├── auth-context.ts
+│   │   │   └── AuthContext.tsx
+│   │   │
+│   │   ├── hooks/
+│   │   │   └── useAuth.ts
+│   │   │
+│   │   ├── pages/
+│   │   │   ├── Explore.tsx
+│   │   │   ├── Favorites.tsx
+│   │   │   ├── Login.tsx
+│   │   │   └── Register.tsx
+│   │   │
+│   │   ├── services/
+│   │   │   ├── api.ts
+│   │   │   └── github.ts
+│   │   │
+│   │   ├── types/
+│   │   │   ├── favorite.ts
+│   │   │   └── repo.ts
+│   │   │
+│   │   ├── App.tsx
+│   │   ├── index.css
+│   │   └── main.tsx
+│   │
+│   ├── .env.example
+│   ├── package.json
+│   └── vite.config.ts
+│
+├── BackEnd/
+│   ├── prisma/
+│   │   ├── migrations/
+│   │   └── schema.prisma
+│   │
+│   ├── src/
+│   │   ├── config/
+│   │   │   └── prisma.ts
+│   │   │
+│   │   ├── controllers/
+│   │   │   ├── auth.controller.ts
+│   │   │   └── favorite.controller.ts
+│   │   │
+│   │   ├── middleware/
+│   │   │   └── auth.middleware.ts
+│   │   │
+│   │   ├── routes/
+│   │   │   ├── auth.routes.ts
+│   │   │   └── favorite.routes.ts
+│   │   │
+│   │   ├── utils/
+│   │   │   └── generateToken.ts
+│   │   │
+│   │   ├── app.ts
+│   │   └── server.ts
+│   │
+│   ├── .env.example
+│   ├── package.json
+│   ├── prisma.config.ts
+│   └── tsconfig.json
+│
+└── README.md
 ```
 
-## Prerequisites
+---
 
-Make sure you have:
+## Getting Started
 
-- Node.js 18+
+### Prerequisites
+
+Make sure you have installed:
+
+- Node.js 18 or later
 - npm
-- PostgreSQL database or Supabase project
+- Git
 
-## Backend Setup
+You will also need a PostgreSQL database. This project uses Supabase PostgreSQL.
 
-Go to the backend folder:
+---
+
+## Clone the Repository
+
+```bash
+git clone YOUR_GITHUB_REPOSITORY_URL
+cd GitHubRepoExplorer
+```
+
+Replace `YOUR_GITHUB_REPOSITORY_URL` with the actual URL of this repository.
+
+---
+
+# Backend Setup
+
+Move into the backend directory:
 
 ```bash
 cd BackEnd
@@ -65,22 +188,27 @@ Install dependencies:
 npm install
 ```
 
-Create a `.env` file inside the `BackEnd` folder:
+Create a `.env` file inside the `BackEnd` directory.
 
 ```env
 PORT=8000
+
 JWT_SECRET=your_jwt_secret
-DATABASE_URL=your_database_url
-DIRECT_URL=your_direct_database_url
+
+DATABASE_URL=your_supabase_database_url
+
+DIRECT_URL=your_supabase_direct_url
+
+FRONTEND_URL=http://localhost:5173
+
+PREVIEW_URL=http://localhost:4173
 ```
 
-> Do not commit your `.env` file or expose your database credentials and JWT secret.
+Do not commit the `.env` file.
 
-Run Prisma migrations:
+---
 
-```bash
-npx prisma migrate dev
-```
+## Prisma Setup
 
 Generate Prisma Client:
 
@@ -88,19 +216,33 @@ Generate Prisma Client:
 npx prisma generate
 ```
 
-Start the backend development server:
+Apply the database migrations:
+
+```bash
+npx prisma migrate dev
+```
+
+Optional: open Prisma Studio to inspect the database:
+
+```bash
+npx prisma studio
+```
+
+---
+
+## Start the Backend
 
 ```bash
 npm run dev
 ```
 
-The backend runs at:
+The backend will run at:
 
 ```text
 http://localhost:8000
 ```
 
-You can verify that the backend is running by visiting:
+You can verify that the API is running by opening:
 
 ```text
 http://localhost:8000
@@ -114,9 +256,11 @@ Expected response:
 }
 ```
 
-## Frontend Setup
+---
 
-Open a new terminal and go to the frontend folder:
+# Frontend Setup
+
+Open another terminal and move into the frontend directory:
 
 ```bash
 cd Frontend
@@ -128,27 +272,33 @@ Install dependencies:
 npm install
 ```
 
-Start the frontend development server:
+Create a `.env` file inside the `Frontend` directory.
+
+```env
+VITE_API_URL=http://localhost:8000
+```
+
+Start the frontend:
 
 ```bash
 npm run dev
 ```
 
-The frontend normally runs at:
+The frontend will normally run at:
 
 ```text
 http://localhost:5173
 ```
 
-Open the URL in your browser.
+---
 
-## API Routes
+# API Endpoints
 
-### Authentication
+## Authentication
 
-#### Register
+### Register User
 
-```text
+```http
 POST /auth/register
 ```
 
@@ -156,9 +306,9 @@ Example request body:
 
 ```json
 {
-  "name": "Test User",
-  "username": "testuser",
-  "email": "test@example.com",
+  "name": "John Doe",
+  "username": "johndoe",
+  "email": "john@example.com",
   "password": "password123"
 }
 ```
@@ -170,16 +320,18 @@ Example response:
   "message": "User registered successfully",
   "user": {
     "id": 1,
-    "name": "Test User",
-    "username": "testuser",
-    "email": "test@example.com"
+    "name": "John Doe",
+    "username": "johndoe",
+    "email": "john@example.com"
   }
 }
 ```
 
-#### Login
+---
 
-```text
+### Login User
+
+```http
 POST /auth/login
 ```
 
@@ -187,7 +339,7 @@ Example request body:
 
 ```json
 {
-  "email": "test@example.com",
+  "email": "john@example.com",
   "password": "password123"
 }
 ```
@@ -200,26 +352,30 @@ Example response:
   "token": "JWT_TOKEN",
   "user": {
     "id": 1,
-    "name": "Test User",
-    "username": "testuser",
-    "email": "test@example.com"
+    "name": "John Doe",
+    "username": "johndoe",
+    "email": "john@example.com"
   }
 }
 ```
 
-## Favorites API
+---
 
-The favorites routes are protected using JWT authentication.
+# Favorites API
 
-Authenticated requests must include:
+All favorite routes require a valid JWT.
 
-```text
-Authorization: Bearer <token>
+Send the token using the Authorization header:
+
+```http
+Authorization: Bearer YOUR_JWT_TOKEN
 ```
 
-### Get Favorites
+---
 
-```text
+## Get User Favorites
+
+```http
 GET /user/favorites
 ```
 
@@ -237,15 +393,18 @@ Example response:
       "language": "C",
       "stars": 200000,
       "owner": "torvalds",
-      "userId": 1
+      "userId": 1,
+      "createdAt": "2026-08-13T00:00:00.000Z"
     }
   ]
 }
 ```
 
-### Save Favorite
+---
 
-```text
+## Save Favorite Repository
+
+```http
 POST /user/favorites
 ```
 
@@ -263,233 +422,159 @@ Example request body:
 }
 ```
 
-The same repository cannot be saved twice by the same user.
+A user cannot save the same GitHub repository more than once.
 
-### Delete Favorite
+---
 
-```text
+## Delete Favorite Repository
+
+```http
 DELETE /user/favorites/:id
 ```
 
 Example:
 
-```text
+```http
 DELETE /user/favorites/1
 ```
 
-## GitHub Repository Search
+---
 
-Repository searches use the public GitHub API.
+# GitHub API
 
-```text
+Repository searches use GitHub's public API.
+
+```http
 GET https://api.github.com/users/{username}/repos
 ```
 
-Example:
+For example:
 
-```text
+```http
 GET https://api.github.com/users/torvalds/repos
 ```
 
-The frontend displays:
+The frontend fetches public repository information directly from GitHub.
 
-- Repository name
-- Repository description
-- Programming language
-- Star count
-- GitHub repository link
-- Save button
+When a logged-in user clicks **Save**, the selected repository is sent to the backend and stored in PostgreSQL.
 
-## Authentication Flow
+---
 
-The application uses JWT-based authentication.
+# Authentication Flow
 
-The authentication process works as follows:
+The authentication flow works as follows:
 
-1. The user creates an account using the Register page.
-2. The backend receives the user's name, username, email, and password.
-3. The password is hashed using bcrypt.
-4. The hashed password is stored in PostgreSQL.
-5. The user logs in using their email and password.
-6. bcrypt compares the entered password with the stored password hash.
-7. The backend generates a JWT if the credentials are correct.
-8. The frontend stores the JWT.
-9. Axios automatically attaches the token to protected backend requests.
-10. The backend authentication middleware verifies the JWT.
-11. Protected favorites routes use the authenticated user's ID.
+1. The user creates an account.
+2. The backend hashes the password using bcrypt.
+3. The hashed password is stored in PostgreSQL.
+4. The user logs in using email and password.
+5. The backend compares the submitted password with the stored hash.
+6. If the credentials are valid, the backend generates a JWT.
+7. The frontend stores the JWT.
+8. Axios automatically attaches the token to protected API requests.
+9. The backend authentication middleware verifies the JWT.
+10. Protected `/user` endpoints become accessible.
 
-## Database
+---
 
-The application uses PostgreSQL hosted on Supabase.
+# Database Design
 
-Prisma is used as the ORM.
+The application contains two main database models.
 
-The application contains two main database models:
-
-### User
-
-The User model stores:
-
-- ID
-- Name
-- Username
-- Email
-- Hashed password
-- Created date
-
-Example Prisma model:
-
-```prisma
-model User {
-  id        Int                  @id @default(autoincrement())
-  name      String
-  username  String               @unique
-  email     String               @unique
-  password  String
-  createdAt DateTime             @default(now())
-
-  favorites FavoriteRepository[]
-}
-```
-
-### FavoriteRepository
-
-The FavoriteRepository model stores repositories saved by users.
-
-```prisma
-model FavoriteRepository {
-  id           Int      @id @default(autoincrement())
-  githubRepoId Int
-  name         String
-  description  String?
-  htmlUrl      String
-  language     String?
-  stars        Int      @default(0)
-  owner        String
-  createdAt    DateTime @default(now())
-
-  userId Int
-
-  user User @relation(
-    fields: [userId],
-    references: [id],
-    onDelete: Cascade
-  )
-
-  @@unique([userId, githubRepoId])
-}
-```
-
-The unique constraint:
-
-```prisma
-@@unique([userId, githubRepoId])
-```
-
-prevents the same user from saving the same GitHub repository more than once.
-
-## Frontend Structure
+## User
 
 ```text
-Frontend/
-├── src/
-│   ├── components/
-│   │   ├── Navbar.tsx
-│   │   ├── ProtectedRoute.tsx
-│   │   └── RepoCard.tsx
-│   │
-│   ├── context/
-│   │   ├── AuthContext.tsx
-│   │   └── auth-context.ts
-│   │
-│   ├── hooks/
-│   │   └── useAuth.ts
-│   │
-│   ├── pages/
-│   │   ├── Explore.tsx
-│   │   ├── Favorites.tsx
-│   │   ├── Login.tsx
-│   │   └── Register.tsx
-│   │
-│   ├── services/
-│   │   ├── api.ts
-│   │   └── github.ts
-│   │
-│   ├── types/
-│   │   ├── favorite.ts
-│   │   └── repo.ts
-│   │
-│   ├── App.tsx
-│   ├── index.css
-│   └── main.tsx
-│
-├── package.json
-└── vite.config.ts
+id
+name
+username
+email
+password
+createdAt
 ```
 
-## Backend Structure
+Each user can have multiple favorite repositories.
+
+---
+
+## FavoriteRepository
 
 ```text
-BackEnd/
-├── prisma/
-│   ├── migrations/
-│   └── schema.prisma
-│
-├── src/
-│   ├── config/
-│   │   └── prisma.ts
-│   │
-│   ├── controllers/
-│   │   ├── auth.controller.ts
-│   │   └── favorite.controller.ts
-│   │
-│   ├── generated/
-│   │   └── prisma/
-│   │
-│   ├── middleware/
-│   │   └── auth.middleware.ts
-│   │
-│   ├── routes/
-│   │   ├── auth.routes.ts
-│   │   └── favorite.routes.ts
-│   │
-│   ├── utils/
-│   │   └── generateToken.ts
-│   │
-│   ├── app.ts
-│   └── server.ts
-│
-├── .env
-├── .env.example
-├── .gitignore
-├── package.json
-├── prisma.config.ts
-└── tsconfig.json
+id
+githubRepoId
+name
+description
+htmlUrl
+language
+stars
+owner
+userId
+createdAt
 ```
 
-## Frontend Authentication
+The `userId` associates a saved repository with a specific user.
 
-The frontend uses an authentication context to track whether the user is logged in.
+The Prisma schema also contains a unique constraint:
 
-The JWT token is stored locally and automatically added to API requests using an Axios interceptor.
-
-Example:
-
-```ts
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-
-  return config;
-});
+```text
+userId + githubRepoId
 ```
 
-The Favorites page is protected using a React Router protected route.
+This prevents the same user from saving the same GitHub repository multiple times.
 
-Logged-out users who try to access:
+---
+
+# TypeScript Usage
+
+TypeScript is used throughout both the frontend and backend.
+
+Examples include:
+
+- GitHub repository interfaces
+- Favorite repository interfaces
+- React component props
+- Authentication context types
+- Custom authenticated Express request type
+- JWT payload types
+- Prisma-generated database types
+- Typed API responses
+- Strict TypeScript configuration
+
+---
+
+# Frontend Architecture
+
+The frontend uses reusable components and separates responsibilities between pages, API services, types, hooks, and authentication state.
+
+### Explore Page
+
+Allows users to:
+
+- Enter a GitHub username
+- Search public repositories
+- View repository details
+- Save repositories after login
+
+### Login Page
+
+Allows existing users to authenticate and receive a JWT.
+
+### Register Page
+
+Allows new users to create an account.
+
+### Favorites Page
+
+Allows authenticated users to:
+
+- View saved repositories
+- Open repositories on GitHub
+- Remove repositories from favorites
+
+### Protected Route
+
+The favorites page is protected on the frontend.
+
+Logged-out users who try to visit:
 
 ```text
 /favorites
@@ -501,347 +586,322 @@ are redirected to:
 /login
 ```
 
-## Data Fetching
+---
 
-TanStack React Query is used for asynchronous data fetching.
+# React Query
 
-It handles:
+TanStack React Query is used for data fetching and server-state management.
 
-- GitHub repository requests
-- Loading states
-- Request caching
-- Favorites fetching
-- Favorites refresh after deletion
+It provides:
 
-## Error Handling
-
-The application handles errors such as:
-
-- GitHub user not found
-- GitHub API failure
-- Incorrect login credentials
-- Duplicate email
-- Duplicate username
-- Unauthorized favorites requests
-- Duplicate favorite repositories
-- Invalid favorite IDs
-- Database errors
-
-The UI displays appropriate loading and error messages to the user.
-
-## Responsive Design
-
-Tailwind CSS is used for styling.
-
-The application includes:
-
-- Responsive repository cards
-- Responsive authentication forms
-- Responsive layouts
-- Desktop and mobile support
 - Loading states
 - Error states
-- Hover and interaction styles
+- Query caching
+- Query invalidation
+- Automatic refresh of favorites after removing a repository
 
-## Security
+---
 
-The application includes several basic security practices:
+# Error Handling
 
-- Passwords are hashed with bcrypt
-- Passwords are never returned from the backend
-- JWT authentication protects private API routes
-- JWT secrets are stored in environment variables
-- Database credentials are stored in environment variables
-- `.env` is excluded from Git
-- Users can only delete favorites belonging to their own account
-- Duplicate favorites are prevented by a database constraint
+The application handles common errors such as:
 
-## Environment Variables
+- Missing registration fields
+- Duplicate username or email
+- Invalid login credentials
+- Missing JWT
+- Invalid JWT
+- Expired JWT
+- Duplicate favorite repositories
+- Invalid repository IDs
+- GitHub usernames that do not exist
+- GitHub API failures
+- Backend failures
+- Database failures
 
-### Backend `.env`
+---
+
+# Security
+
+The backend includes several basic security practices:
+
+- Passwords are never stored as plain text
+- Passwords are hashed using bcrypt
+- Protected routes require JWT authentication
+- JWTs are verified on the backend
+- User passwords are not returned in API responses
+- Environment variables are stored outside source control
+- Database credentials are never committed to GitHub
+- Users can only access favorites associated with their account
+
+---
+
+# CORS
+
+The backend allows requests only from configured frontend origins.
+
+Local development:
 
 ```env
-PORT=8000
-
-JWT_SECRET=your_generated_secret
-
-DATABASE_URL=your_supabase_database_url
-
-DIRECT_URL=your_supabase_direct_url
+FRONTEND_URL=http://localhost:5173
+PREVIEW_URL=http://localhost:4173
 ```
 
-Do not commit the real `.env` file.
+Production uses the deployed Vercel frontend URL.
 
-Create a safe `.env.example` file:
+---
+
+# Environment Variables
+
+## Backend `.env.example`
 
 ```env
 PORT=8000
 JWT_SECRET=
 DATABASE_URL=
 DIRECT_URL=
+FRONTEND_URL=
+PREVIEW_URL=
 ```
 
-## Development Commands
+## Frontend `.env.example`
 
-### Backend
-
-Start development server:
-
-```bash
-npm run dev
+```env
+VITE_API_URL=
 ```
 
-Build the backend:
+Never commit real `.env` files containing secrets.
 
-```bash
-npm run build
+---
+
+# Production Deployment
+
+## Frontend
+
+The frontend is deployed on Vercel.
+
+Production URL:
+
+```text
+https://github-repo-explorer-by-priyanka.vercel.app
 ```
 
-Run Prisma migration:
+Production environment variable:
 
-```bash
-npx prisma migrate dev
+```env
+VITE_API_URL=https://githubrepoexplorer-q036.onrender.com
 ```
 
-Generate Prisma Client:
+---
 
-```bash
-npx prisma generate
+## Backend
+
+The backend is deployed on Render.
+
+Production URL:
+
+```text
+https://githubrepoexplorer-q036.onrender.com
 ```
 
-Open Prisma Studio:
+The Render environment includes:
 
-```bash
-npx prisma studio
+```env
+JWT_SECRET=your_production_secret
+DATABASE_URL=your_supabase_database_url
+DIRECT_URL=your_supabase_direct_url
+FRONTEND_URL=https://github-repo-explorer-by-priyanka.vercel.app
 ```
 
-### Frontend
+---
 
-Start development server:
+## Database
 
-```bash
-npm run dev
-```
+The PostgreSQL database is hosted using Supabase.
 
-Build frontend:
+Prisma is used for schema management, migrations, and type-safe database queries.
 
-```bash
-npm run build
-```
+---
 
-Preview production build:
+# Build Commands
 
-```bash
-npm run preview
-```
-
-## Production Build
-
-Before deployment, verify that both applications compile successfully.
-
-### Backend
+## Backend
 
 ```bash
 cd BackEnd
 npm run build
 ```
 
-### Frontend
+The backend build generates the Prisma Client and compiles TypeScript.
+
+---
+
+## Frontend
 
 ```bash
 cd Frontend
 npm run build
 ```
 
-## Technical Decisions
+Vite generates the production frontend inside:
 
-### TypeScript
+```text
+dist/
+```
 
-TypeScript is used across both the frontend and backend to provide:
+---
 
-- Static type checking
-- Better developer tooling
-- Safer API interactions
-- Typed React props
-- Typed GitHub responses
-- Typed database queries
+# Technical Decisions and Tradeoffs
 
-### Prisma
+## PostgreSQL + Prisma
 
-Prisma was selected because it provides:
+PostgreSQL was selected because users and favorite repositories have a clear relational structure.
 
-- Type-safe database access
-- PostgreSQL support
+Prisma provides:
+
+- Type-safe queries
 - Database migrations
-- Prisma Studio
-- Generated TypeScript types
+- Schema management
+- Strong TypeScript integration
 
-### PostgreSQL
+---
 
-PostgreSQL was chosen because users and favorites have a clear relational structure.
+## Supabase
 
-Each user can have many saved repositories.
-
-### Supabase
-
-Supabase provides the hosted PostgreSQL database used by the application.
-
-Authentication is implemented separately in the Express backend using JWT and bcrypt.
-
-### React Query
-
-TanStack React Query was chosen to handle server data and asynchronous state.
+Supabase is used as the hosted PostgreSQL provider.
 
 It simplifies:
 
-- Loading states
-- Error states
+- Database hosting
+- PostgreSQL connection management
+- Development and deployment
+
+---
+
+## JWT Authentication
+
+JWT authentication was selected because the project requires JWT-based authentication.
+
+It also works well with a separately deployed React frontend and Express backend.
+
+---
+
+## bcrypt
+
+bcrypt is used to securely hash passwords before storing them in the database.
+
+Plain-text passwords are never stored.
+
+---
+
+## React Query
+
+React Query was selected because repository and favorite data are asynchronous server state.
+
+It simplifies:
+
+- Loading handling
+- Error handling
 - Caching
 - Refetching
-- Favorites synchronization
+- Query invalidation
 
-### Axios
+---
 
-Axios is used for HTTP requests.
+## GitHub API Calls from the Frontend
 
-A shared Axios instance automatically adds the JWT Authorization header to authenticated backend requests.
+The GitHub repository search is performed directly from the frontend because the application only requests public GitHub repository information.
 
-### JWT Authentication
+The backend is responsible for authenticated application data such as user accounts and saved favorites.
 
-JWT authentication was chosen because it provides a simple stateless authentication mechanism suitable for a take-home fullstack application.
+A larger production system could proxy GitHub requests through the backend to provide centralized caching, API authentication, and rate-limit management.
 
-### bcrypt
+---
 
-bcrypt securely hashes user passwords before they are stored in PostgreSQL.
+## JWT Storage
 
-### Tailwind CSS
+For simplicity, the JWT is stored in `localStorage`.
 
-Tailwind CSS is used for responsive and reusable styling without requiring large custom CSS files.
+This is appropriate for the scope of this take-home project.
 
-### Separate Frontend and Backend
+For a larger production application, authentication could use secure `HttpOnly`, `Secure`, and `SameSite` cookies to reduce exposure of tokens to client-side JavaScript.
 
-The project separates frontend and backend concerns.
+---
 
-The frontend handles:
+# Future Improvements
 
-- UI
-- Routing
-- Search
-- Authentication state
-- User interactions
+Possible future improvements include:
 
-The backend handles:
-
-- Authentication
-- Password hashing
-- JWT generation
-- Database access
-- Favorites management
-- Authorization
-
-## Tradeoffs
-
-### GitHub API Authentication
-
-Repository searches currently use GitHub's unauthenticated public API.
-
-This keeps the project simple but means GitHub API rate limits apply.
-
-A production version could use authenticated GitHub API requests.
-
-### JWT Storage
-
-JWT tokens are currently stored in browser local storage for simplicity.
-
-For a larger production application, secure HTTP-only cookies would provide additional protection against token theft through XSS.
-
-### Search Pagination
-
-The application currently displays the repositories returned from the GitHub user repositories endpoint without implementing custom pagination.
-
-Pagination could be added for users with many repositories.
-
-### Testing
-
-The current project focuses primarily on the requested take-home functionality.
-
-A production version should include:
-
-- Unit tests
-- API integration tests
-- React component tests
-- End-to-end tests
-
-## Possible Improvements
-
-Future improvements could include:
-
-- GitHub OAuth authentication
-- Repository pagination
-- Sort repositories by stars
-- Sort repositories by updated date
-- Filter repositories by programming language
+- GitHub OAuth
+- Pagination
+- Repository sorting
+- Repository filtering
 - Search history
-- Toast notifications
 - Dark mode
-- User profile page
-- Repository statistics
-- Better GitHub API rate-limit handling
-- Automated tests
-- Docker support
-- CI/CD pipeline
+- Toast notifications
+- Skeleton loading states
+- Automated frontend tests
+- Automated backend tests
+- Integration tests
 - Refresh tokens
-- Secure HTTP-only authentication cookies
+- HttpOnly cookie authentication
+- Rate-limit handling
+- GitHub API authentication
+- Repository language filters
+- Favorites search
+- User profile page
 
-## Testing the Application
+---
 
-A typical manual test flow is:
+# Testing the Application
 
-1. Start the backend.
-2. Start the frontend.
-3. Create a new account.
-4. Log in.
-5. Search for a GitHub username such as:
+A typical test flow is:
+
+```text
+Register
+↓
+Login
+↓
+Search GitHub username
+↓
+View repositories
+↓
+Save repository
+↓
+Open Favorites
+↓
+Remove repository
+↓
+Logout
+```
+
+Example GitHub usernames to test:
 
 ```text
 torvalds
+facebook
+microsoft
+vercel
 ```
 
-6. Verify repositories are displayed.
-7. Click **Save** on a repository.
-8. Open the Favorites page.
-9. Verify the saved repository appears.
-10. Remove the repository.
-11. Verify it disappears from Favorites.
-12. Log out.
-13. Try to access `/favorites`.
-14. Verify the application redirects to `/login`.
+---
 
-## Checklist
+# Deployment URLs
 
-- [x] Frontend builds successfully
-- [x] Backend builds successfully
-- [x] Register works
-- [x] Login works
-- [x] Passwords are hashed
-- [x] JWT authentication works
-- [x] Protected backend routes work
-- [x] GitHub username search works
-- [x] Repository information displays correctly
-- [x] Save favorite works
-- [x] Duplicate favorites are prevented
-- [x] Favorites page works
-- [x] Delete favorite works
-- [x] Protected frontend route works
-- [x] Loading states work
-- [x] Error states work
-- [x] Responsive design works
-- [x] `.env` is ignored
-- [x] `.env.example` is included
-- [x] No database credentials are committed
-- [x] README contains setup instructions
-- [x] Both projects pass production builds
+Frontend:
 
-## Author
+```text
+https://github-repo-explorer-by-priyanka.vercel.app
+```
+
+Backend:
+
+```text
+https://githubrepoexplorer-q036.onrender.com
+```
+
+---
+
+# Author
 
 Priyanka
