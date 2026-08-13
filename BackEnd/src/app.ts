@@ -1,5 +1,7 @@
 import express from "express";
 import cors from "cors";
+import authRoutes from "./routes/auth.routes.js";
+import favoriteRoutes from "./routes/favorite.routes.js";
 
 const app = express();
 
@@ -11,5 +13,8 @@ app.get("/", (req, res) => {
     message: "GitHub Repo Explorer API is running",
   });
 });
+
+app.use("/auth", authRoutes);
+app.use("/user", favoriteRoutes);
 
 export default app;
