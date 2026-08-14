@@ -18,10 +18,7 @@ export default function Navbar() {
   return (
     <header className="border-b border-slate-200 bg-white">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        <Link
-          to="/"
-          className="text-xl font-bold tracking-tight text-slate-900"
-        >
+        <Link to="/" className="text-xl font-bold tracking-tight text-blue-600">
           GitHub Repo Explorer
         </Link>
 
@@ -62,7 +59,11 @@ export default function Navbar() {
             <>
               <NavLink
                 to="/login"
-                className="font-medium text-slate-600 hover:text-slate-900"
+                className={({ isActive }) =>
+                  isActive
+                    ? "font-medium text-blue-600"
+                    : "font-medium text-slate-600 hover:text-slate-900"
+                }
               >
                 Login
               </NavLink>
