@@ -27,7 +27,7 @@ export default function Navbar() {
   return (
     <header className="border-b border-slate-200 bg-white">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="flex h-[72px] items-center justify-between">
+        <div className="flex h-18 items-center justify-between">
           <Link
             to="/"
             onClick={closeMenu}
