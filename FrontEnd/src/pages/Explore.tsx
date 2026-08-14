@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { getReposByUsername } from "../services/github";
 import RepoCard from "../components/RepoCard";
+import RepoCardSkeleton from "../components/RepoCardSkeleton";
 
 export default function Explore() {
   const [username, setUsername] = useState("");
@@ -67,9 +68,18 @@ export default function Explore() {
       </section>
 
       {isLoading && (
-        <div className="mt-14 text-center">
-          <p className="text-slate-500">Loading repositories...</p>
-        </div>
+        <section className="mt-14">
+          <div className="mb-6">
+            <div className="h-4 w-28 animate-pulse rounded bg-slate-200" />
+            <div className="mt-3 h-7 w-44 animate-pulse rounded bg-slate-200" />
+          </div>
+
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <RepoCardSkeleton key={index} />
+            ))}
+          </div>
+        </section>
       )}
 
       {isError && (
